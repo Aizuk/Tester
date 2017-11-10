@@ -1,0 +1,24 @@
+/*Tests TP1 */
+
+import example.*
+describe "Test TP 1"{
+	var fender
+	var gibson 
+	var joaquin
+	var lucia
+	var luisAlberto
+	var cisne = new Cancion(312,"Hoy el viento se abrió quedó vacío el aire una vez más y el manantial brotó y nadie está aquí y puedo ver que solo estallan las hojas al brillar")
+	var laFamilia = new Cancion(264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
+	var fechaLuna = new Date(20,04,2017)
+	var fechaTrast = new Date(15,11,2017)
+	var lunaPark = new Escenario(9290)
+	var trastienda 
+	var presentacionLuna = new Presentacion(fechaLuna,[luisAlberto,joaquin,lucia],lunaPark)
+	var presentacionTrast = new Presentacion(fechaTrast,[luisAlberto,joaquin,lucia],trastienda)
+	var kike = 
+	}
+test "testX" {
+
+	assert.that(true)
+
+}

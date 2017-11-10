@@ -1,6 +1,6 @@
  /** TP N1 */
 class Musico {
-	var grupo
+	var grupo=null
 	var habilidadBase
 	var albumes = []
 	
@@ -10,14 +10,14 @@ class Musico {
 		albumes = _albumes
 	}
 	
-	method solista() = grupo!=null
+	method solista() = grupo==null
 	method habilidad() = habilidadBase
 	method dejarGrupo() {grupo = null}
-	method albumesPublicados() = albumes.forEach(album->album.titulo())
-	method laPego() = albumes.forEach(album->album.buenaVenta())
-	method minimalista() = albumes.forEach(album->album.cancionesCortas())
-	method duracionObra() = albumes.sum(album->album.duracion())
-	method palabraEnCadaCancion(palabra) = albumes.cancionesContienen(palabra)
+	/*method albumesPublicados() = albumes.size()*/
+	method laPego() = albumes.all({album=>album.buenaVenta()})
+	method minimalista() = albumes.all({album=>album.cancionesCortas()})
+	method duracionObra() = albumes.sum({album=>album.duracion()})
+	method palabraEnCadaCancion(palabra) = albumes.all({album=>album.cancionesContienen(palabra)})
 }
 
 class DeGrupo inherits Musico{
@@ -46,7 +46,7 @@ object joaquin inherits DeGrupo("pimpinela",20,null,5) {
 
 object lucia inherits VocalistaPopular("Pimpinela",70,null,"familia") {
 	override method habilidad(){
-		if (grupo!=null) return habilidadBase -= 20
+		if (grupo!=null) return habilidadBase - 20
 		else return habilidadBase
 	}
 	method precioPorPresentacion(presentacion){
@@ -79,8 +79,9 @@ class Album{
 		copiasVendidas = _copiasVendidas
 	}
 	method titulo() = titulo
-	method cancionMasLarga() = canciones.forEach(cancion->cancion.duracion()).max()
-	
+	method cancionMasLarga() = canciones.forEach({cancion=>cancion.duracion()}).max()
+	method cancionesCortas () = canciones.all({cancion=>cancion.esCorta()})
+	method buenaVenta() = copiasVendidas>copiasHechas*0.75
 }
 
 class Cancion {
@@ -91,8 +92,9 @@ class Cancion {
 		letra = _letra
 	}
 	
-	method duracion() = duracion
-	method letra() = letra
+	method esCorta()=duracion<180
+	/**method duracion() = duracion
+	method letra() = letra**/
 
 }
 
