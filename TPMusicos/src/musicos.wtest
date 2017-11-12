@@ -1,0 +1,97 @@
+/*Tests TP1 */
+
+import example.*
+describe "Test TP 1"{
+	var fender
+	var gibson 
+	var joaquin
+	var lucia
+	var luisAlberto
+	var cisne = new Cancion(312,"Hoy el viento se abrió quedó vacío el aire una vez más y el manantial brotó y nadie está aquí y puedo ver que solo estallan las hojas al brillar")
+	var laFamilia = new Cancion(264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
+	var fechaLuna = new Date(20,04,2017)
+	var fechaTrast = new Date(15,11,2017)
+	var lunaPark = new Escenario(9290)
+	var trastienda 
+	var presentacionLuna = new Presentacion(fechaLuna,[luisAlberto,joaquin,lucia],lunaPark)
+	var presentacionTrast = new Presentacion(fechaTrast,[luisAlberto,joaquin,lucia],trastienda)
+	
+	test "Punto 1"{
+		assert.equals(25,joaquin.habilidad())
+	}
+	test "Punto 2"{
+		joaquin.dejarGrupo()
+		assert.equals(20,joaquin.habilidad())
+	}
+	test "Punto 3"{
+		assert.equals(50,lucia.habilidad())
+	}
+	test "Punto 4"{
+		lucia.dejarGrupo()
+		assert.equals(70,lucia.habilidad())
+	}
+	test "Punto 5"{
+		assert.equals(80,luisAlberto.habilidad(fender))
+	}
+	test "Punto 6"{
+		assert.equals(100,luisAlberto.habilidad(gibson))
+	}
+	test "Punto 7"{
+		gibson.maltratada()
+		assert.equals(40,luisAlberto.habilidad(gibson))
+	}
+	test "Punto 8"{
+		assert.notThat(joaquin.interpretaBien(laFamilia))
+	}
+	test "Punto 9"{
+		assert.that(joaquin.interpretaBien(cisne))
+	}
+	test "Punto 10"{
+		assert.that(lucia.interpretaBien(laFamilia))
+	}
+	test "Punto 11"{
+		assert.notThat(lucia.interpretaBien(cisne))
+	}
+	test "Punto 12"{
+		assert.that(luisAlberto.interpretaBien(laFamilia))
+	}
+	test "Punto 13"{
+		assert.that(luisAlberto.interpretaBien(cisne))
+	}
+	test "Punto 14"{
+		assert.equals(50,joaquin.precioPorPresentacion(presentacionLuna))
+	}
+	test "Punto 15"{
+		presentacionTrast.sacarMusico(lucia)
+		presentacionTrast.sacarMusico(luisAlberto)
+		assert.equals(100,joaquin.precioPorPresentacion(presentacionTrast))
+	}
+	test "Punto 16"{
+		var fecha2Trast = new Date(05,08,2017)
+		var present2Trast = new Presentacion(fecha2Trast,null,trastienda)
+		assert.equals(700,present2Trast.capacidad())
+	}
+	test "Punto 17"{
+		var fecha3Trast = new Date(08,08,2017)
+		var present3Trast = new Presentacion(fecha3Trast,null,trastienda)
+		assert.equals(400,present3Trast.capacidad())
+	}
+	test "Punto 18"{
+		assert.equals(500,lucia.precioPorPresentacion(presentacionLuna))
+	}
+	test "Punto 19"{
+		assert.equals(400,lucia.precioPorPresentacion(presentacionTrast))
+	}
+	test "Punto 20"{
+		assert.equals(1000,luisAlberto.precioPorPresentacion(presentacionLuna))
+	}
+	test "Punto 21"{
+		assert.equals(1200,luisAlberto.precioPorPresentacion(presentacionTrast))
+	}
+	test "Punto 22"{
+		assert.equals(1550,presentacionLuna.precio())
+	}
+	test "Punto 23"{
+		assert.equals(1650,presentacionTrast.precio())
+	}
+}
