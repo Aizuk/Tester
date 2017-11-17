@@ -18,7 +18,7 @@ class Musico {
 	method laPego() = albumes.all({album=>album.buenaVenta()})
 	method minimalista() = albumes.all({album=>album.cancionesCortas()})
 	method duracionObra() = albumes.sum({album=>album.duracion()})
-	method cancionesQueContienen(palabra) = albumes.filter({album=>album.cancionesQueContienen(palabra)})
+	method cancionesQueContienen(palabra) = albumes.flatMap({album=>album.cancionesQueContienen(palabra)})
 }
 
 class DeGrupo inherits Musico{
