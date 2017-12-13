@@ -1,7 +1,7 @@
-/*Tests TP2 */
+/*Tests TP3 */
 
-import Parte2.*
-describe "Test TP 2"{
+import TP3.*
+describe "Test TP 3"{
 	var fender
 	var gibson 
 	var joaquin
@@ -11,7 +11,7 @@ describe "Test TP 2"{
 	var laFamilia = new Cancion(264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
 	var fechaLuna = new Date(20,04,2017)
 	var fechaTrast = new Date(15,11,2017)
-	var lunaPark = new Escenario(9290)
+	var lunaPark
 	var trastienda 
 	var presentacionLuna = new Presentacion(fechaLuna,[luisAlberto,joaquin,lucia],lunaPark)
 	var presentacionTrast = new Presentacion(fechaTrast,[luisAlberto,joaquin,lucia],trastienda)
@@ -24,11 +24,18 @@ describe "Test TP 2"{
 	var albumSole = new Album([eres,corazonAmericano],"La Sole",fechaSole,200000,130000)
 	var soledad = new VocalistaPopular([albumSole],55,[],"amor")
 	var fechaArboles = new Date(31,03,2003)
-	var almaDiamante = new Cancion(216,"en a mí con tu dulce luz alma de diamante. Y aunque el sol se nuble después sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven así con la humanidad alma de diamante")
+	var almaDiamante = new Cancion(216,"Ven a mí con tu dulce luz alma de diamante. Y aunque el sol se nuble después sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven así con la humanidad alma de diamante")
 	var arboles = new Album([cisne,almaDiamante],"Para los arboles",fechaArboles,50000,49000)
 	var fechaCrisantemo = new Date(05,12,2007)
 	var crisantemo = new Cancion(175,"Tócame junto a esta pared, yo quede por aquí... cuando no hubo más luz... quiero mirar a través de mi piel... Crisantemo, que se abrió... encuentra el camino hacia el cielo")
 	var justCrisantemo = new Album([crisantemo],"Just Crisantemo",fechaCrisantemo,28000,27500)
+	var remixFamilia = new Remix(laFamilia)
+	var mashupDiamanteCrisantemo = new Mashup(almaDiamante,crisantemo)
+	var pdpalooza
+	var criterioDuracion
+	var criterioTamanioLetra
+	var criterioTitulo
+//	var excepcionHabilidad = new UserException ("Habilidad insuficiente")
 	
 	fixture{
 		joaquin.editarAlbum(albumFamilia)
@@ -36,62 +43,71 @@ describe "Test TP 2"{
 		luisAlberto.editarAlbum(arboles)
 		luisAlberto.editarAlbum(justCrisantemo)
 		
+		
 	}
 	
 	test "Punto 1"{
-		assert.that(crisantemo.esCorta())
+		assert.that(joaquin.interpretaBien(laFamilia))
 	}
 	test "Punto 2"{
-		assert.notThat(almaDiamante.esCorta())
+		assert.that(joaquin.interpretaBien(cisne))
 	}
 	test "Punto 3"{
-		assert.that(soledad.minimalista())
+		lucia.dejarGrupo()
+		assert.that(lucia.interpretaBien(laFamilia))
 	}
 	test "Punto 4"{
-		assert.notThat(luisAlberto.minimalista())
+		lucia.dejarGrupo()
+		assert.that(lucia.interpretaBien(cisne))
 	}
 	test "Punto 5"{
-		assert.notThat(joaquin.minimalista())
+		assert.notThat(lucia.interpretaBien(cisne))
 	}
 	test "Punto 6"{
-		assert.equals([almaDiamante,crisantemo],luisAlberto.cancionesQueContienen("cielo"))
+		assert.that(luisAlberto.interpretaBien(laFamilia))
 	}
 	test "Punto 7"{
-		assert.equals([],luisAlberto.cancionesQueContienen("pujante"))
+		assert.that(luisAlberto.interpretaBien(cisne))
 	}
 	test "Punto 8"{
-		assert.equals(0,kike.duracionObra())
+		assert.equals(laFamilia,albumFamilia.cancionMasLarga(criterioDuracion))
 	}
 	test "Punto 9"{
-		assert.equals(2,luisAlberto.albumesPublicados())
+		assert.equals(corazonAmericano,albumSole.cancionMasLarga(criterioDuracion))
 	}
 	test "Punto 10"{
-		assert.equals(0,kike.duracionObra())
+		assert.equals(eres,albumSole.cancionMasLarga(criterioTamanioLetra))
 	}
 	test "Punto 11"{
-		assert.equals(299,soledad.duracionObra())
+		assert.equals(792,remixFamilia.duracion())
 	}
 	test "Punto 12"{
-		assert.equals(703,luisAlberto.duracionObra())
+		assert.equals("mueve tu cuelpo baby Quiero brindar por mi gente sencilla, por el amor brindo por la familia yeah oh yeah",remixFamilia.letra())
 	}
 	test "Punto 13"{
-		assert.equals(almaDiamante,arboles.cancionMasLarga())
+		assert.equals(216,mashupDiamanteCrisantemo.duracion())
 		
 	}
 	test "Punto 14"{
-		assert.equals(eres,albumSole.cancionMasLarga())
+		assert.equals("Ven a mí con tu dulce luz alma de diamante. Y aunque el sol se nuble después sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven así con la humanidad alma de diamante Tócame junto a esta pared, yo quede por aquí... cuando no hubo más luz... quiero mirar a través de mi piel... Crisantemo, que se abrió... encuentra el camino hacia el cielo",mashupDiamanteCrisantemo.letra())
 	}
 	test "Punto 15"{
-		assert.equals(laFamilia,albumFamilia.cancionMasLarga())
+		pdpalooza.agregarMusico(luisAlberto)
+		assert.equals([luisAlberto],pdpalooza.musicos())
 	}
 	test "Punto 16"{
-		assert.that(luisAlberto.laPego())
+		joaquin.dejarGrupo()
+		assert.throwsException({pdpalooza.agregarMusico(joaquin)})
 	}
 	test "punto 17"{
-		assert.notThat(soledad.laPego())
+		lucia.cambiarHabilidadBase(90)
+		lucia.dejarGrupo()
+		assert.throwsException({pdpalooza.agregarMusico(lucia)})
 	}
 	test "Punto 18"{
-		assert.that(joaquin.laPego())
+		soledad.cambiarHabilidadBase(80)
+		pdpalooza.agregarMusico(soledad)
+		assert.equals([soledad],pdpalooza.musicos())
 	}
 }
 	

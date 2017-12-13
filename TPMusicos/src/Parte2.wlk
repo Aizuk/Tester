@@ -1,4 +1,4 @@
- /** TP N1 */
+ /** TP N2 */
 class Musico {
 	var grupo=null
 	var habilidadBase
@@ -11,13 +11,14 @@ class Musico {
 	}
 	
 	method solista() = grupo==null
+	method editarAlbum(album) = albumes.add(album)
 	method habilidad() = habilidadBase
 	method dejarGrupo() {grupo = null}
-	/*method albumesPublicados() = albumes.size()*/
+	method albumesPublicados() = albumes.size()
 	method laPego() = albumes.all({album=>album.buenaVenta()})
 	method minimalista() = albumes.all({album=>album.cancionesCortas()})
 	method duracionObra() = albumes.sum({album=>album.duracion()})
-	method palabraEnCadaCancion(palabra) = albumes.all({album=>album.cancionesContienen(palabra)})
+	method cancionesQueContienen(palabra) = albumes.flatMap({album=>album.cancionesQueContienen(palabra)})
 }
 
 class DeGrupo inherits Musico{
@@ -36,7 +37,7 @@ class VocalistaPopular inherits Musico{
 	method interpretaBien(cancion) = cancion.letra().contains(palabraClave)
 }
 
-object joaquin inherits DeGrupo("pimpinela",20,null,5) {
+object joaquin inherits DeGrupo("pimpinela",20,[],5) {
 	method interpretaBien(cancion) = cancion.duracion() > 300
 	method precioPorPresentacion(presentacion){
 		if (presentacion.musicos().size()==1) return 100
@@ -44,7 +45,7 @@ object joaquin inherits DeGrupo("pimpinela",20,null,5) {
 	}
 }
 
-object lucia inherits VocalistaPopular("Pimpinela",70,null,"familia") {
+object lucia inherits VocalistaPopular("Pimpinela",70,[],"familia") {
 	override method habilidad(){
 		if (grupo!=null) return habilidadBase - 20
 		else return habilidadBase
@@ -55,7 +56,8 @@ object lucia inherits VocalistaPopular("Pimpinela",70,null,"familia") {
 	}	
 }
 
-object luisAlberto inherits Musico(null,8,#{fender,gibson}){
+object luisAlberto inherits Musico(null,8,[]){
+	var instrumentos = #{fender,gibson}
 	const fechaCambioPrecio = new Date(01,09,2017)
 	method habilidad(instrumento) = (habilidadBase*(instrumento.valor())).min(100)
 	method interpretaBien(cancion) = true
@@ -79,9 +81,11 @@ class Album{
 		copiasVendidas = _copiasVendidas
 	}
 	method titulo() = titulo
-	method cancionMasLarga() = canciones.forEach({cancion=>cancion.duracion()}).max()
+	method cancionMasLarga() = canciones.max({cancion=>cancion.longitud()})
 	method cancionesCortas () = canciones.all({cancion=>cancion.esCorta()})
 	method buenaVenta() = copiasVendidas>copiasHechas*0.75
+	method cancionesQueContienen(palabra) = canciones.filter({cancion=>cancion.tienePalabra(palabra)})
+	method duracion() = canciones.sum({cancion=>cancion.duracion()})
 }
 
 class Cancion {
@@ -93,8 +97,9 @@ class Cancion {
 	}
 	
 	method esCorta()=duracion<180
-	/**method duracion() = duracion
-	method letra() = letra**/
+	method duracion() = duracion
+	method tienePalabra(palabra) = letra.toUpperCase().contains(palabra.toUpperCase())
+	method longitud() = letra.size()
 
 }
 

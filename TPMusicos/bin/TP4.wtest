@@ -1,0 +1,141 @@
+/*Tests TP4 */
+
+import TP4.*
+describe "Test TP 3"{
+	var fender
+	var gibson
+	//CANCIONES
+	var cisne = new Cancion(312,"Hoy el viento se abrió quedó vacío el aire una vez más y el manantial brotó y nadie está aquí y puedo ver que solo estallan las hojas al brillar")
+	var laFamilia = new Cancion(264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
+	var eres = new Cancion(145,"Eres lo mejor que me pasó en la vida, no tengo duda, no habrá más nada después de ti. Eres lo que le dio brillo al día a día, y así será por siempre, no cambiará, hasta el final de mis días")
+	var almaDiamante = new Cancion(216,"Ven a mí con tu dulce luz alma de diamante. Y aunque el sol se nuble después sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven así con la humanidad alma de diamante")
+	var crisantemo = new Cancion(175,"Tócame junto a esta pared, yo quede por aquí... cuando no hubo más luz... quiero mirar a través de mi piel... Crisantemo, que se abrió... encuentra el camino hacia el cielo")
+	var corazonAmericano = new Cancion(154,"Canta corazón, canta más alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto corazón, como soñamos")
+	//FECHAS
+	var fechaLuna = new Date(20,04,2017)
+	var fechaTrast = new Date(15,11,2017)
+	var fechaFamilia = new Date(17,06,1992)
+	var fechaSole = new Date(04,02,2005)
+	var fechaArboles = new Date(31,03,2003)
+	var fechaCrisantemo = new Date(05,12,2007)
+	var fechaCobroKike = new Date(08,01,2018)
+	var fechaPrix = new Date(30,06,2017)
+	var fechaCueva = new Date(05,01,2018)
+	//ALBUMES
+	var albumFamilia = new Album([laFamilia],"La Familia",fechaFamilia,100000,89000)
+	var albumSole = new Album([eres,corazonAmericano],"La Sole",fechaSole,200000,130000)
+	var arboles = new Album([cisne,almaDiamante],"Para los arboles",fechaArboles,50000,49000)
+	var justCrisantemo = new Album([crisantemo],"Just Crisantemo",fechaCrisantemo,28000,27500)
+	//CRITERIOS
+	var criterioDuracion
+	var criterioTamanioLetra
+	var criterioTitulo
+	//CATEGORIAS
+	var catKike = new Imparero()
+	//FORMAS DE COBRO
+	var cobroSole = new CobroSolista(6000)
+	var cobroKike = new CobroInflacion(fechaCobroKike,50,4000) 
+	//MUSICOS
+	var joaquin
+	var lucia
+	var luisAlberto
+	var kike = new DeGrupo(null,60,[],20,catKike,cobroKike)
+	var soledad = new VocalistaPopular([albumSole],55,[],"amor",cobroSole)
+	//REPRESENTANTES
+	var cachorro = new Representante(1982)
+	var felix = new Representante(500)
+	//BANDAS
+	var pimpisole = new Banda([soledad,joaquin,lucia],cachorro)
+	var eternoRetorno = new Banda ([kike,luisAlberto],felix)
+	//ESCENARIOS Y PRESENTACIONES
+	var lunaPark
+	var trastienda	
+	var escenarioPrix 
+	var escenarioCueva
+	var presentacionLuna = new Presentacion(fechaLuna,[luisAlberto,joaquin,lucia],lunaPark)
+	var presentacionTrast = new Presentacion(fechaTrast,[luisAlberto,joaquin,lucia],trastienda)
+	var prix = new Presentacion(fechaPrix,[joaquin,soledad,eternoRetorno],escenarioPrix)
+	var cueva = new Presentacion(fechaCueva,[pimpisole],escenarioCueva)
+	var pdpalooza
+	//REMIX & MASHUP
+	var remixFamilia = new Remix(laFamilia)
+	var mashupDiamanteCrisantemo = new Mashup(almaDiamante,crisantemo)
+	
+	fixture{
+		joaquin.editarAlbum(albumFamilia)
+		soledad.editarAlbum(albumSole)
+		luisAlberto.editarAlbum(arboles)
+		luisAlberto.editarAlbum(justCrisantemo)	
+	}
+	
+	test "Punto 1"{
+		joaquin.cambiarCategoria(new Imparero())
+		assert.that(joaquin.interpretaBien(laFamilia))
+	}
+	test "Punto 2"{
+		joaquin.cambiarCategoria(new Imparero())
+		assert.notThat(joaquin.interpretaBien(cisne))
+	}
+	test "Punto 3"{
+		kike.cambiarCategoria(new Palabrero("de"))
+		assert.equals(kike.inteprertaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[corazonAmericano,eres,almaDiamante,crisantemo])
+	}
+	test "Punto 4"{
+		assert.equals(joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[laFamilia,cisne,cancionAlicia])
+	}
+	test "Punto 5"{
+		joaquin.cambiarCategoria(new Palabrero("xilofon"))
+		assert.equals(joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[laFamilia])
+	}
+	test "Punto 6"{
+		lucia.cambiarCategoria(new Imparero())
+		assert.equals(lucia.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[eres,crisantemo])
+	}
+	test "Punto 7"{
+		var fechaCambio = new Date(01,02,2017)
+		var cobroJoaquin = new CobroInflacion(fechaCambio,20,1000) 
+		joaquin.cambiarFormaDeCobro(cobroJoaquin)
+		assert.equals(joaquin.precioPorPresentacion(prix),1200)
+	}
+	test "Punto 8"{
+		prix.cambiarFecha(new Date(24,01,2017))
+		var fechaCambio = new Date(01,02,2017)
+		var cobroJoaquin = new CobroInflacion(fechaCambio,20,1000) 
+		joaquin.cambiarFormaDeCobro(cobroJoaquin)
+		assert.equals(joaquin.precioPorPresentacion(prix),1000)
+	}
+	test "Punto 9"{
+		assert.equals(joaquin.precioPorPresentacion(prix),50)
+	}
+	test "Punto 10"{
+		joaquin.cambiarFormaDeCobro(new CobroCapacidad(13000,2500))
+		assert.equals(joaquin.precioPorPresentacion(prix),2400)
+	}
+	test "Punto 11"{
+		joaquin.cambiarFormaDeCobro(new CobroCapacidad(13000,2500))
+		assert.equals(joaquin.precioPorPresentacion(cueva),2500)
+	}
+	test "Punto 12"{
+		assert.equals(eternoRetorno.precioPorPresentacion(prix),5500)
+	}
+	test "Punto 13"{
+		assert.equals(prix.precio(),8550)
+		
+	}
+	test "Punto 14"{
+		assert.equals(cueva.precio(),5532)
+	}
+	test "Punto 15"{
+		assert.equals(eternoRetorno.habilidad(),154)
+	}
+	test "Punto 16"{
+		assert.equals(prix.magia(),234)
+	}
+	test "punto 17"{
+		assert.notThat(pimpisole.interpretaBien(cisne))
+	}
+	test "Punto 18"{
+		assert.that(eternoRetorno.interpretaBien(crisantemo))
+	}
+}
+	
