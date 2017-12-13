@@ -27,11 +27,11 @@ class Musico {
 	method cancionesQueContienen(palabra) = albumes.flatMap({album=>album.cancionesQueContienen(palabra)})
 	method compusoCancion(cancion) = albumes.any({album=>album.tieneCancion(cancion)})
 	method cambiarHabilidadBase(habilidad) {habilidadBase = habilidad}
-	method interpretaBien(cancion) = self.compusoCancion(cancion) || self.habilidad()>=habilidadMinima || categoria.interpretaBien(cancion)
+	method interpretaBien(cancion) = self.compusoCancion(cancion) || self.habilidad()>habilidadMinima || categoria.interpretaBien(cancion)
 	method precioPorPresentacion(presentacion) = formaDeCobro.cuantoCobra(presentacion)
-	method cambiarCategoria(_categoria) = {categoria = _categoria}
+	method cambiarCategoria(_categoria) {categoria = _categoria}
 	method cambiarFormaDeCobro(_formaDeCobro) = {formaDeCobro = _formaDeCobro}
-	method interpretaBienLista(playlist) = playlist.all({cancion=>self.interpretaBien(cancion)}) 
+	method interpretaBienLista(playlist) = playlist.filter({cancion=>self.interpretaBien(cancion)}) 
 		
 }
 
@@ -40,7 +40,7 @@ class DeGrupo inherits Musico{
 	constructor(_grupo,_habilidad,_albumes,_bonus,_criterio,_formaDeCobro) = super(_grupo,_habilidad,_albumes,_criterio,_formaDeCobro){
 		bonus = _bonus
 	}
-	override method habilidad() = habilidadBase+bonus
+	override method habilidad() = if(self.solista()) return habilidadBase else return habilidadBase+bonus
 }
 
 class VocalistaPopular inherits Musico{

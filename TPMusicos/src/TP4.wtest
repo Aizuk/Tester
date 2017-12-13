@@ -11,6 +11,7 @@ describe "Test TP 3"{
 	var almaDiamante = new Cancion(216,"Ven a mí con tu dulce luz alma de diamante. Y aunque el sol se nuble después sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven así con la humanidad alma de diamante")
 	var crisantemo = new Cancion(175,"Tócame junto a esta pared, yo quede por aquí... cuando no hubo más luz... quiero mirar a través de mi piel... Crisantemo, que se abrió... encuentra el camino hacia el cielo")
 	var corazonAmericano = new Cancion(154,"Canta corazón, canta más alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto corazón, como soñamos")
+	var cancionAlicia
 	//FECHAS
 	var fechaLuna = new Date(20,04,2017)
 	var fechaTrast = new Date(15,11,2017)
@@ -31,15 +32,15 @@ describe "Test TP 3"{
 	var criterioTamanioLetra
 	var criterioTitulo
 	//CATEGORIAS
-	var catKike = new Imparero()
+	var imparero = new Imparero()
 	//FORMAS DE COBRO
 	var cobroSole = new CobroSolista(6000)
-	var cobroKike = new CobroInflacion(fechaCobroKike,50,4000) 
+	var cobroKike = new CobroInflacion(fechaCobroKike,50,4000)
 	//MUSICOS
 	var joaquin
 	var lucia
 	var luisAlberto
-	var kike = new DeGrupo(null,60,[],20,catKike,cobroKike)
+	var kike = new DeGrupo(null,60,[],20,imparero,cobroKike)
 	var soledad = new VocalistaPopular([albumSole],55,[],"amor",cobroSole)
 	//REPRESENTANTES
 	var cachorro = new Representante(1982)
@@ -69,16 +70,17 @@ describe "Test TP 3"{
 	}
 	
 	test "Punto 1"{
-		joaquin.cambiarCategoria(new Imparero())
+		joaquin.cambiarCategoria(imparero)
 		assert.that(joaquin.interpretaBien(laFamilia))
 	}
 	test "Punto 2"{
-		joaquin.cambiarCategoria(new Imparero())
+		joaquin.cambiarCategoria(imparero)
 		assert.notThat(joaquin.interpretaBien(cisne))
 	}
 	test "Punto 3"{
-		kike.cambiarCategoria(new Palabrero("de"))
-		assert.equals(kike.inteprertaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[corazonAmericano,eres,almaDiamante,crisantemo])
+		var palabrero = new Palabrero("de")
+		kike.cambiarCategoria(palabrero)
+		assert.equals([corazonAmericano,eres,almaDiamante,crisantemo],kike.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]))
 	}
 	test "Punto 4"{
 		assert.equals(joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[laFamilia,cisne,cancionAlicia])
