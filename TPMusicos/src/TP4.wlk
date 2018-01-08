@@ -20,6 +20,7 @@ class Musico {
 	method editarAlbum(album) = albumes.add(album)
 	method habilidad() = habilidadBase
 	method dejarGrupo() {grupo = null}
+	method meterseEnBanda(banda) {grupo=banda}
 	method albumesPublicados() = albumes.size()
 	method laPego() = albumes.all({album=>album.buenaVenta()})
 	method minimalista() = albumes.all({album=>album.cancionesCortas()})
@@ -30,7 +31,7 @@ class Musico {
 	method interpretaBien(cancion) = self.compusoCancion(cancion) || self.habilidad()>habilidadMinima || categoria.interpretaBien(cancion)
 	method precioPorPresentacion(presentacion) = formaDeCobro.cuantoCobra(presentacion)
 	method cambiarCategoria(_categoria) {categoria = _categoria}
-	method cambiarFormaDeCobro(_formaDeCobro) = {formaDeCobro = _formaDeCobro}
+	method cambiarFormaDeCobro(_formaDeCobro) {formaDeCobro = _formaDeCobro}
 	method interpretaBienLista(playlist) = playlist.filter({cancion=>self.interpretaBien(cancion)}) 
 		
 }
@@ -47,7 +48,7 @@ class VocalistaPopular inherits Musico{
 	constructor(_grupo,_habilidad,_albumes,_palabraClave,_formaDeCobro) = super(_grupo,_habilidad,_albumes,new Palabrero(_palabraClave),_formaDeCobro)
 }
 
-object joaquin inherits DeGrupo("pimpinela",20,[],5,new Larguero(300),new CobroSolista(100)){}
+object joaquin inherits DeGrupo(null,20,[],5,new Larguero(300),new CobroSolista(100)){}
 
 object lucia inherits VocalistaPopular("Pimpinela",70,[],"familia",new CobroCapacidad(5000,500)) {
 	override method habilidad(){
@@ -71,10 +72,10 @@ class Banda{
 		representante = _representante
 	}
 	method habilidad() = musicos.sum({musico=>musico.habilidad()})*1.1
-	method cuantoCobra(presentacion) = musicos.sum({musico=>musico.cuantoCobra(presentacion)})+representante.cuantoCobra()
+	method precioPorPresentacion(presentacion) = musicos.sum({musico=>musico.precioPorPresentacion(presentacion)})+representante.cuantoCobra()
 	method interpretaBien(cancion) = musicos.all({musico=>musico.interpretaBien(cancion)})
+	method cantidadMusicos() = musicos.size()
 }
-
 
 
 class Representante{
@@ -82,7 +83,7 @@ class Representante{
 	constructor(_tarifa){
 		tarifa = _tarifa
 	}
-	method cuantoCobra(presentacion) = tarifa
+	method cuantoCobra() = tarifa
 }
 
 class Larguero{
@@ -97,7 +98,7 @@ class Palabrero{
 	constructor(_palabraClave){
 		palabraClave=_palabraClave
 	}
-	method interpretaBien(cancion) = cancion.tienePalabra(palabraClave)
+	method interpretaBien(cancion) = cancion.tienePalabra(" "+palabraClave+" ")
 }
 class Imparero{
 	method interpretaBien(cancion) = cancion.duracion().odd()
@@ -108,7 +109,7 @@ class CobroSolista{
 	constructor(m){
 		montoNormal = m
 	}
-	method cuantoCobra(presentacion) = if (presentacion.cantidadBandas()==1) return montoNormal else return montoNormal/2
+	method cuantoCobra(presentacion) = if (presentacion.cantidadMusicos()==1) return montoNormal else return montoNormal/2
 }
 
 class CobroCapacidad{
@@ -130,7 +131,8 @@ class CobroInflacion{
 		porcentajeAdicional = p
 		montoNormal = m
 	}
-	method cuantoCobra(presentacion) = if(fechaCambioPrecio>presentacion.fecha()) return montoNormal*porcentajeAdicional/100 else return montoNormal
+	method aumento() = montoNormal*porcentajeAdicional/100
+	method cuantoCobra(presentacion) = if(fechaCambioPrecio>presentacion.fecha()) return montoNormal else return montoNormal+self.aumento()
 }
 
 class Album{
@@ -208,12 +210,14 @@ object criterioTitulo{
 class Presentacion {
 	var fecha
 	var musicos = []
+	var bandas
 	var lugar
 
-	constructor (_fecha,_musicos,_lugar)
+	constructor (_fecha,_musicos,_bandas,_lugar)
 	{
 		fecha = _fecha
 		musicos = _musicos
+		bandas = _bandas
 		lugar = _lugar
 	}
 
@@ -222,12 +226,13 @@ class Presentacion {
 	method musicos() = musicos 
 	method sacarMusico(musico) = musicos.remove(musico)
 	method lugarConcurrido() = lugar.concurrido(fecha)
-	method precio() = musicos.sum({musico => musico.precioPorPresentacion(self)})
-	method magia() = musicos.sum({musico=>musico.habilidad()})
-	method cambiarFecha(_fecha) = {fecha = _fecha}
+	method cantidadMusicos() = musicos.size()+bandas.sum({banda=>banda.cantidadMusicos()})
+	method precio() = (musicos+bandas).sum({musico => musico.precioPorPresentacion(self)})
+	method magia() = (musicos+bandas).sum({participante=>participante.habilidad()})
+	method cambiarFecha(_fecha) {fecha = _fecha}
 }
 
-object pdpalooza inherits Presentacion(new Date(15,12,2017),[],lunaPark){
+object pdpalooza inherits Presentacion(new Date(15,12,2017),[],[],lunaPark){
 	var condicionesAdmision = [condicionHabilidad,condicionCancion,condicionCancionAlicia]
 	method agregarMusico(musico) = if(self.cumpleCondiciones(musico)) musicos.add(musico)
 	
@@ -250,7 +255,7 @@ object condicionCancionAlicia{
 	method cumple(musico) = musico.interpretaBien(cancionAlicia)
 }
 
-object cancionAlicia inherits Cancion(510,"Quién sabe Alicia, este país no estuvo hecho porque sí. Te vas a ir, vas a salir pero te quedas, ¿dónde más vas a ir? Y es que aquí, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabó ese juego que te hacía feliz."){}
+object cancionAlicia inherits Cancion(510,"Quiï¿½n sabe Alicia, este paï¿½s no estuvo hecho porque sï¿½. Te vas a ir, vas a salir pero te quedas, ï¿½dï¿½nde mï¿½s vas a ir? Y es que aquï¿½, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabï¿½ ese juego que te hacï¿½a feliz."){}
 
 object lunaPark {
 	const capacidad = 9290
@@ -271,12 +276,12 @@ object trastienda{
 
 object escenarioPrix{
 	const capacidad = 150
-	method capacidad() = capacidad
+	method capacidad(_) = capacidad
 } 
 
 object escenarioCueva{
 	const capacidad = 14000
-	method capacidad() = capacidad
+	method capacidad(_) = capacidad
 }
 
 object fender {

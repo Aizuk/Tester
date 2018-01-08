@@ -47,8 +47,8 @@ object joaquin inherits DeGrupo("pimpinela",20,[],5) {
 
 object lucia inherits VocalistaPopular("Pimpinela",70,[],"familia") {
 	override method habilidad(){
-		if (grupo!=null) return habilidadBase - 20
-		else return habilidadBase
+		if (self.solista()) return habilidadBase
+		else return habilidadBase - 20
 	}
 	method precioPorPresentacion(presentacion){
 		if (presentacion.lugarConcurrido()) return 500
@@ -81,11 +81,12 @@ class Album{
 		copiasVendidas = _copiasVendidas
 	}
 	method titulo() = titulo
-	method cancionMasLarga() = canciones.max({cancion=>cancion.longitud()})
-	method cancionesCortas () = canciones.all({cancion=>cancion.esCorta()})
+	method canciones() = canciones
+	method cancionMasLarga() = self.canciones().max({cancion=>cancion.longitud()})
+	method cancionesCortas () = self.canciones().all({cancion=>cancion.esCorta()})
 	method buenaVenta() = copiasVendidas>copiasHechas*0.75
-	method cancionesQueContienen(palabra) = canciones.filter({cancion=>cancion.tienePalabra(palabra)})
-	method duracion() = canciones.sum({cancion=>cancion.duracion()})
+	method cancionesQueContienen(palabra) = self.canciones().filter({cancion=>cancion.tienePalabra(palabra)})
+	method duracion() = self.canciones().sum({cancion=>cancion.duracion()})	
 }
 
 class Cancion {

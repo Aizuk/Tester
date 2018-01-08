@@ -5,12 +5,12 @@ describe "Test TP 3"{
 	var fender
 	var gibson
 	//CANCIONES
-	var cisne = new Cancion(312,"Hoy el viento se abrió quedó vacío el aire una vez más y el manantial brotó y nadie está aquí y puedo ver que solo estallan las hojas al brillar")
+	var cisne = new Cancion(312,"Hoy el viento se abriï¿½ quedï¿½ vacï¿½o el aire una vez mï¿½s y el manantial brotï¿½ y nadie estï¿½ aquï¿½ y puedo ver que solo estallan las hojas al brillar")
 	var laFamilia = new Cancion(264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
-	var eres = new Cancion(145,"Eres lo mejor que me pasó en la vida, no tengo duda, no habrá más nada después de ti. Eres lo que le dio brillo al día a día, y así será por siempre, no cambiará, hasta el final de mis días")
-	var almaDiamante = new Cancion(216,"Ven a mí con tu dulce luz alma de diamante. Y aunque el sol se nuble después sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven así con la humanidad alma de diamante")
-	var crisantemo = new Cancion(175,"Tócame junto a esta pared, yo quede por aquí... cuando no hubo más luz... quiero mirar a través de mi piel... Crisantemo, que se abrió... encuentra el camino hacia el cielo")
-	var corazonAmericano = new Cancion(154,"Canta corazón, canta más alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto corazón, como soñamos")
+	var eres = new Cancion(145,"Eres lo mejor que me pasï¿½ en la vida, no tengo duda, no habrï¿½ mï¿½s nada despuï¿½s de ti. Eres lo que le dio brillo al dï¿½a a dï¿½a, y asï¿½ serï¿½ por siempre, no cambiarï¿½, hasta el final de mis dï¿½as")
+	var almaDiamante = new Cancion(216,"Ven a mï¿½ con tu dulce luz alma de diamante. Y aunque el sol se nuble despuï¿½s sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven asï¿½ con la humanidad alma de diamante")
+	var crisantemo = new Cancion(175,"Tï¿½came junto a esta pared, yo quede por aquï¿½... cuando no hubo mï¿½s luz... quiero mirar a travï¿½s de mi piel... Crisantemo, que se abriï¿½... encuentra el camino hacia el cielo")
+	var corazonAmericano = new Cancion(154,"Canta corazï¿½n, canta mï¿½s alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto corazï¿½n, como soï¿½amos")
 	var cancionAlicia
 	//FECHAS
 	var fechaLuna = new Date(20,04,2017)
@@ -53,10 +53,10 @@ describe "Test TP 3"{
 	var trastienda	
 	var escenarioPrix 
 	var escenarioCueva
-	var presentacionLuna = new Presentacion(fechaLuna,[luisAlberto,joaquin,lucia],lunaPark)
-	var presentacionTrast = new Presentacion(fechaTrast,[luisAlberto,joaquin,lucia],trastienda)
-	var prix = new Presentacion(fechaPrix,[joaquin,soledad,eternoRetorno],escenarioPrix)
-	var cueva = new Presentacion(fechaCueva,[pimpisole],escenarioCueva)
+	var presentacionLuna = new Presentacion(fechaLuna,[luisAlberto,joaquin,lucia],[],lunaPark)
+	var presentacionTrast = new Presentacion(fechaTrast,[luisAlberto,joaquin,lucia],[],trastienda)
+	var prix = new Presentacion(fechaPrix,[joaquin,soledad],[eternoRetorno],escenarioPrix)
+	var cueva = new Presentacion(fechaCueva,[],[pimpisole],escenarioCueva)
 	var pdpalooza
 	//REMIX & MASHUP
 	var remixFamilia = new Remix(laFamilia)
@@ -66,7 +66,9 @@ describe "Test TP 3"{
 		joaquin.editarAlbum(albumFamilia)
 		soledad.editarAlbum(albumSole)
 		luisAlberto.editarAlbum(arboles)
-		luisAlberto.editarAlbum(justCrisantemo)	
+		luisAlberto.editarAlbum(justCrisantemo)
+		joaquin.meterseEnBanda(pimpisole)
+		soledad.meterseEnBanda(pimpisole)	
 	}
 	
 	test "Punto 1"{
@@ -83,55 +85,55 @@ describe "Test TP 3"{
 		assert.equals([corazonAmericano,eres,almaDiamante,crisantemo],kike.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]))
 	}
 	test "Punto 4"{
-		assert.equals(joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[laFamilia,cisne,cancionAlicia])
+		assert.equals([laFamilia,cisne,cancionAlicia],joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]))
 	}
 	test "Punto 5"{
 		joaquin.cambiarCategoria(new Palabrero("xilofon"))
-		assert.equals(joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[laFamilia])
+		assert.equals([laFamilia],joaquin.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]))
 	}
 	test "Punto 6"{
 		lucia.cambiarCategoria(new Imparero())
-		assert.equals(lucia.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]),[eres,crisantemo])
+		assert.equals([eres,crisantemo],lucia.interpretaBienLista([corazonAmericano,eres,laFamilia,cisne,almaDiamante,cancionAlicia,crisantemo]))
 	}
 	test "Punto 7"{
-		var fechaCambio = new Date(01,02,2017)
+		var fechaCambio = new Date(30,01,2017)
 		var cobroJoaquin = new CobroInflacion(fechaCambio,20,1000) 
 		joaquin.cambiarFormaDeCobro(cobroJoaquin)
-		assert.equals(joaquin.precioPorPresentacion(prix),1200)
+		assert.equals(1200,joaquin.precioPorPresentacion(prix))
 	}
 	test "Punto 8"{
 		prix.cambiarFecha(new Date(24,01,2017))
 		var fechaCambio = new Date(01,02,2017)
 		var cobroJoaquin = new CobroInflacion(fechaCambio,20,1000) 
 		joaquin.cambiarFormaDeCobro(cobroJoaquin)
-		assert.equals(joaquin.precioPorPresentacion(prix),1000)
+		assert.equals(1000,joaquin.precioPorPresentacion(prix))
 	}
 	test "Punto 9"{
-		assert.equals(joaquin.precioPorPresentacion(prix),50)
+		assert.equals(50,joaquin.precioPorPresentacion(prix))
 	}
 	test "Punto 10"{
 		joaquin.cambiarFormaDeCobro(new CobroCapacidad(13000,2500))
-		assert.equals(joaquin.precioPorPresentacion(prix),2400)
+		assert.equals(2400,joaquin.precioPorPresentacion(prix))
 	}
 	test "Punto 11"{
 		joaquin.cambiarFormaDeCobro(new CobroCapacidad(13000,2500))
-		assert.equals(joaquin.precioPorPresentacion(cueva),2500)
+		assert.equals(2500,joaquin.precioPorPresentacion(cueva))
 	}
 	test "Punto 12"{
-		assert.equals(eternoRetorno.precioPorPresentacion(prix),5500)
+		assert.equals(5500,eternoRetorno.precioPorPresentacion(prix))
 	}
 	test "Punto 13"{
-		assert.equals(prix.precio(),8550)
+		assert.equals(8550,prix.precio())
 		
 	}
 	test "Punto 14"{
-		assert.equals(cueva.precio(),5532)
+		assert.equals(5532,cueva.precio())
 	}
 	test "Punto 15"{
-		assert.equals(eternoRetorno.habilidad(),154)
+		assert.equals(154,eternoRetorno.habilidad())
 	}
 	test "Punto 16"{
-		assert.equals(prix.magia(),234)
+		assert.equals(234,prix.magia())
 	}
 	test "punto 17"{
 		assert.notThat(pimpisole.interpretaBien(cisne))

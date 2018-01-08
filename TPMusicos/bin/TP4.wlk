@@ -108,7 +108,7 @@ class CobroSolista{
 	constructor(m){
 		montoNormal = m
 	}
-	method cuantoCobra(presentacion) = if (presentacion.cantidadBandas()==1) return montoNormal else return montoNormal/2
+	method cuantoCobra(presentacion) = if (presentacion.cantidadMusicos()==1) return montoNormal else return montoNormal/2
 }
 
 class CobroCapacidad{
@@ -222,6 +222,7 @@ class Presentacion {
 	method musicos() = musicos 
 	method sacarMusico(musico) = musicos.remove(musico)
 	method lugarConcurrido() = lugar.concurrido(fecha)
+	method cantidadMusicos() = musicos.size()
 	method precio() = musicos.sum({musico => musico.precioPorPresentacion(self)})
 	method magia() = musicos.sum({musico=>musico.habilidad()})
 	method cambiarFecha(_fecha) = {fecha = _fecha}
@@ -250,7 +251,7 @@ object condicionCancionAlicia{
 	method cumple(musico) = musico.interpretaBien(cancionAlicia)
 }
 
-object cancionAlicia inherits Cancion(510,"Quién sabe Alicia, este país no estuvo hecho porque sí. Te vas a ir, vas a salir pero te quedas, ¿dónde más vas a ir? Y es que aquí, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabó ese juego que te hacía feliz."){}
+object cancionAlicia inherits Cancion(510,"Quiï¿½n sabe Alicia, este paï¿½s no estuvo hecho porque sï¿½. Te vas a ir, vas a salir pero te quedas, ï¿½dï¿½nde mï¿½s vas a ir? Y es que aquï¿½, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabï¿½ ese juego que te hacï¿½a feliz."){}
 
 object lunaPark {
 	const capacidad = 9290

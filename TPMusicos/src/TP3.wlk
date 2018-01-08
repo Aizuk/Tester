@@ -54,8 +54,8 @@ object joaquin inherits DeGrupo("pimpinela",20,[],5) {
 
 object lucia inherits VocalistaPopular("Pimpinela",70,[],"familia") {
 	override method habilidad(){
-		if (grupo!=null) return habilidadBase - 20
-		else return habilidadBase
+		if (self.solista()) return habilidadBase
+		else return habilidadBase - 20
 	}
 	method precioPorPresentacion(presentacion){
 		if (presentacion.lugarConcurrido()) return 500
@@ -190,7 +190,7 @@ object condicionCancionAlicia{
 	method cumple(musico) = musico.interpretaBien(cancionAlicia)
 }
 
-object cancionAlicia inherits Cancion(510,"Quién sabe Alicia, este país no estuvo hecho porque sí. Te vas a ir, vas a salir pero te quedas, ¿dónde más vas a ir? Y es que aquí, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabó ese juego que te hacía feliz."){}
+object cancionAlicia inherits Cancion(510,"Quiï¿½n sabe Alicia, este paï¿½s no estuvo hecho porque sï¿½. Te vas a ir, vas a salir pero te quedas, ï¿½dï¿½nde mï¿½s vas a ir? Y es que aquï¿½, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabï¿½ ese juego que te hacï¿½a feliz."){}
 
 object lunaPark {
 	const capacidad = 9290
